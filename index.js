@@ -30,6 +30,13 @@ app.post("/create", function(req, res){
 	res.redirect("/");
 })
 
+app.get("/read", function(request, response) {
+	Movie.find({}).then(movies => { 
+		response.type('text/plain');
+		response.send(renderMovies(movies));
+	})
+})
+
 const renderMovies = (moviesArray) => {
 	let text = "Movies Collection:\n\n";
 	moviesArray.forEach((movie)=>{
@@ -40,13 +47,6 @@ const renderMovies = (moviesArray) => {
 	text += "Total Count: " + moviesArray.length;
 	return text
 }
-
-app.get("/read", function(request, response) {
-	Movie.find({}).then(movies => { 
-		response.type('text/plain');
-		response.send(renderMovies(movies));
-	})
-})
 
 // Todo: Implement your own MongoDB Atlas Organization, Project, Database Cluster, Database, and Collection.
 // Todo: Implement and test the Update and Delete functionCRUD.
