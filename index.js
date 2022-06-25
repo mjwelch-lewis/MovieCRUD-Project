@@ -20,14 +20,14 @@ const movieSchema = {
 const Movie = mongoose.model("movie", movieSchema);
 
 // Create route called from create.html
-app.post("/create", function(req, res){
-	let newNote = new Movie({
-		title: req.body.title,
-		comments: req.body.comments
+app.post("/create", function(request, response){
+	let newMovie = new Movie({
+		title: request.body.title,
+		comments: request.body.comments
 	})
 	
-	newNote.save();
-	res.redirect("/");
+	newMovie.save();
+	response.redirect("/");
 })
 
 app.get("/read", function(request, response) {
@@ -35,6 +35,20 @@ app.get("/read", function(request, response) {
 		response.type('text/plain');
 		response.send(renderMovies(movies));
 	})
+})
+
+// Create route called from update.html
+app.post("/update", function(request, response){
+	const movieID = request.body.id;
+	Movie.findOneAndUpdate({ _id: movieID}, {title: request.body.title, comments: request.body.comments}, function(err, result) {});
+	response.redirect("/");
+})
+
+// Create route called from delete.html
+app.post("/delete", function(request, response){
+	const movieID = request.body.id;
+	Movie.findByIdAndRemove({ _id: movieID}, function(err) {});
+	response.redirect("/");
 })
 
 const renderMovies = (moviesArray) => {
