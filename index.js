@@ -30,13 +30,6 @@ app.post("/create", function(request, response){
 	response.redirect("/");
 })
 
-app.get("/read", function(request, response) {
-	Movie.find({}).then(movies => { 
-		response.type('text/plain');
-		response.send(renderMovies(movies));
-	})
-})
-
 // Create route called from update.html
 app.post("/update", function(request, response){
 	const movieID = request.body.id;
@@ -51,6 +44,14 @@ app.post("/delete", function(request, response){
 	response.redirect("/");
 })
 
+app.get("/read", function(request, response) {
+	Movie.find({}).then(movies => { 
+		response.type('text/plain');
+		response.send(renderMovies(movies));
+	})
+})
+
+//Prints the database contents to the user's browser
 const renderMovies = (moviesArray) => {
 	let text = "Movies Collection:\n\n";
 	moviesArray.forEach((movie)=>{
@@ -62,12 +63,9 @@ const renderMovies = (moviesArray) => {
 	return text
 }
 
-// Todo: Implement your own MongoDB Atlas Organization, Project, Database Cluster, Database, and Collection.
-// Todo: Implement and test the Update and Delete functionCRUD.
-
-// End MongoDB Atlas ********
-
 const port = process.env.PORT || 3000
+
+//test get request
 app.get('/test', function(request, response) {
 	response.type('text/plain')
 	response.send('Node.js and Express running on port='+port)
